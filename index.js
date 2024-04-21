@@ -13,10 +13,10 @@ const app = express();
 // Use CORS middleware
 app.use(cors());
 
-// Define your routes
+
 app.get('/', (req, res) =>
 {
-    res.send('Hello, world!');
+    res.json({ message: 'Hello, world!' });
 });
 
 // Start the server
