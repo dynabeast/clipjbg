@@ -8,6 +8,9 @@
 const express = require('express');
 const cors = require('cors');
 const ytdl = require('ytdl-core');
+const swaggerJsDoc = require("swagger-jsdoc");
+const swaggerUi = require("swagger-ui-express");
+
 const app = express();
 const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
 const ffmpeg = require('fluent-ffmpeg');
@@ -20,8 +23,6 @@ function sanitizeFilename(filename)
 // Use CORS middleware
 app.use(cors());
 
-const swaggerJsDoc = require("swagger-jsdoc");
-const swaggerUi = require("swagger-ui-express");
 
 // Extended: https://swagger.io/specification/#infoObject
 const swaggerOptions = {
