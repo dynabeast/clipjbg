@@ -21,20 +21,21 @@ function sanitizeFilename(filename)
 app.use(cors());
 
 
-app.get('/', async (req, res) =>
-{
-    const url = req.query.url;
-    console.log(url)
-    const info = await ytdl.getInfo(url)
-    const VideoFormats = ytdl.filterFormats(info.formats, 'video')
-    const format = ytdl.chooseFormat(VideoFormats, { quality: "highestaudio" })
+// app.get('/', async (req, res) =>
+// {
+//     const url = req.query.url;
+//     console.log(url)
+//     const info = await ytdl.getInfo(url)
+//     const VideoFormats = ytdl.filterFormats(info.formats, 'video')
+//     const format = ytdl.chooseFormat(VideoFormats, { quality: "highestaudio" })
 
-    const fileName = `${info.videoDetails.title}.${format.container}`
+//     const fileName = `${info.videoDetails.title}.${format.container}`
 
-    const responseHeaders = { 'content-Disposition': `attachment; filename = ${fileName}` }
-    res.json({ format, responseHeaders, fileName });
+//     const responseHeaders = { 'content-Disposition': `attachment; filename = ${fileName}` }
+//     res.json({ format, responseHeaders, fileName });
 
-});
+// });
+app.get("/", (req, res) => { res.send("Express on Vercel"); });
 app.get('/download', async (req, res) =>
 {
     const videoUrl = req.query.url; // Get the video URL from the query parameter
