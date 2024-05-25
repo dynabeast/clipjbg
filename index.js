@@ -20,23 +20,91 @@ function sanitizeFilename(filename)
 // Use CORS middleware
 app.use(cors());
 
+const swaggerJsDoc = require("swagger-jsdoc");
+const swaggerUi = require("swagger-ui-express");
 
-// app.get('/', async (req, res) =>
-// {
-//     const url = req.query.url;
-//     console.log(url)
-//     const info = await ytdl.getInfo(url)
-//     const VideoFormats = ytdl.filterFormats(info.formats, 'video')
-//     const format = ytdl.chooseFormat(VideoFormats, { quality: "highestaudio" })
+// Extended: https://swagger.io/specification/#infoObject
+const swaggerOptions = {
+    swaggerDefinition: {
+        openapi: "3.0.0",
+        info: {
+            title: "Express API",
+            version: "1.0.0",
+            description: "Express API Information",
+            contact: {
+                name: "Developer",
+            },
+            servers: [{ url: "http://localhost:8080" }],
+        },
+    },
+    // ['.routes/*.js']
+    apis: ["index.js"], // Path to the API docs
+};
 
-//     const fileName = `${info.videoDetails.title}.${format.container}`
+const swaggerDocs = swaggerJsDoc(swaggerOptions);
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+/**
+ * @swagger
+ * /video:
+ *   get:
+ *     summary: Download a video
+ *     description: Downloads a video from a provided URL
+ *     parameters:
+ *       - in: query
+ *         name: url
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The URL of the video to download
+ *     responses:
+ *       200:
+ *         description: Video downloaded successfully
+ *         content:
+ *           video/mp4:
+ *             schema:
+ *               type: string
+ *               format: binary
+ *       400:
+ *         description: Video URL is required
+ *       500:
+ *         description: Error downloading the video
+ */
 
-//     const responseHeaders = { 'content-Disposition': `attachment; filename = ${fileName}` }
-//     res.json({ format, responseHeaders, fileName });
 
-// });
-app.get("/", (req, res) => { res.send("Express on Vercel"); });
-app.get('/download', async (req, res) =>
+
+
+/**
+ * @swagger
+ * /audio:
+ *   get:
+ *     summary: Download a Audio from a Video
+ *     description: Downloads a Audio from a provided video URL
+ *     parameters:
+ *       - in: query
+ *         name: url
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The URL of the video to  download audio from
+ *     responses:
+ *       200:
+ *         description: Audio downloaded successfully
+ *         content:
+ *           audio/mpeg:
+ *             schema:
+ *               type: string
+ *               format: binary
+ *       400:
+ *         description: Video URL is required
+ *       500:
+ *         description: Error downloading the video
+ */
+
+
+
+
+app.get("/", (req, res) => { res.send("Express on express-vidbinary"); });
+app.get('/video', async (req, res) =>
 {
     const videoUrl = req.query.url; // Get the video URL from the query parameter
 
@@ -114,3 +182,19 @@ app.listen(PORT, () =>
 {
     console.log(`Server is running on port ${PORT}`);
 });
+
+
+// app.get('/', async (req, res) =>
+// {
+//     const url = req.query.url;
+//     console.log(url)
+//     const info = await ytdl.getInfo(url)
+//     const VideoFormats = ytdl.filterFormats(info.formats, 'video')
+//     const format = ytdl.chooseFormat(VideoFormats, { quality: "highestaudio" })
+
+//     const fileName = `${info.videoDetails.title}.${format.container}`
+
+//     const responseHeaders = { 'content-Disposition': `attachment; filename = ${fileName}` }
+//     res.json({ format, responseHeaders, fileName });
+
+// });
