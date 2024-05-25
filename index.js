@@ -10,6 +10,8 @@ const cors = require('cors');
 const ytdl = require('ytdl-core');
 const swaggerJsDoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
+const CSS_URL =
+    "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui.min.css";
 
 const app = express();
 const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
@@ -35,7 +37,8 @@ const swaggerOptions = {
             contact: {
                 name: "Developer",
             },
-            servers: [{ url: "http://localhost:8080" }],
+            servers: [{ url: "https://vidb.vercel.app/" }],
+            // servers: [{ url: "http://localhost:8080" }],
         },
     },
     // ['.routes/*.js']
@@ -47,11 +50,7 @@ const swaggerDocs = swaggerJsDoc(swaggerOptions);
 app.use(
     "/api-docs",
     swaggerUi.serve,
-    swaggerUi.setup(swaggerDocs, {
-        explorer: true,
-        customCssUrl:
-            "https://cdn.jsdelivr.net/npm/swagger-ui-themes@3.0.0/themes/3.x/theme-newspaper.css",
-    })
+    swaggerUi.setup(swaggerDocs, { customCssUrl: CSS_URL })
 );
 /**
  * @swagger
