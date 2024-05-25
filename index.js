@@ -22,8 +22,7 @@ function sanitizeFilename(filename)
 }
 // Use CORS middleware
 app.use(cors());
-// Serve static files from the 'public' directory
-app.use(express.static('public'));
+
 // Define CDN URL for Swagger UI CSS
 const CSS_URL = "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui.min.css";
 
@@ -53,7 +52,6 @@ app.use(
     swaggerUi.serve,
     swaggerUi.setup(swaggerDocs, { customCssUrl: CSS_URL })
 );
-
 /**
  * @swagger
  * /video:
