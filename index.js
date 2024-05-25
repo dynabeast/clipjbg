@@ -36,42 +36,42 @@ app.use(cors());
 
 // });
 app.get("/", (req, res) => { res.send("Express on Vercel"); });
-app.get('/download', async (req, res) =>
-{
-    const videoUrl = req.query.url; // Get the video URL from the query parameter
+// app.get('/download', async (req, res) =>
+// {
+//     const videoUrl = req.query.url; // Get the video URL from the query parameter
 
-    if (!videoUrl)
-    {
-        return res.status(400).send('Video URL is required');
-    }
+//     if (!videoUrl)
+//     {
+//         return res.status(400).send('Video URL is required');
+//     }
 
-    try
-    {
-        // Get the video info
-        const info = await ytdl.getInfo(videoUrl);
-        const videoFormat = ytdl.chooseFormat(info.formats, { quality: 'highest' });
-        // Sanitize the filename
-        const filename = sanitizeFilename(info.videoDetails.title);
-        const sanitizedFilename = `${filename}.${videoFormat.container}`;
+//     try
+//     {
+//         // Get the video info
+//         const info = await ytdl.getInfo(videoUrl);
+//         const videoFormat = ytdl.chooseFormat(info.formats, { quality: 'highest' });
+//         // Sanitize the filename
+//         const filename = sanitizeFilename(info.videoDetails.title);
+//         const sanitizedFilename = `${filename}.${videoFormat.container}`;
 
 
-        // Set the Content-Disposition header with the sanitized filename
-        res.setHeader('Content-Disposition', `attachment; filename="${sanitizedFilename}"`);
-        res.setHeader('Content-Type', `video/${videoFormat.container}`);
+//         // Set the Content-Disposition header with the sanitized filename
+//         res.setHeader('Content-Disposition', `attachment; filename="${sanitizedFilename}"`);
+//         res.setHeader('Content-Type', `video/${videoFormat.container}`);
 
-        ytdl(videoUrl, { format: videoFormat }).pipe(res);
-        // Set the response headers
-        // res.setHeader('Content-Disposition', `attachment; filename="${info.videoDetails.title}.${videoFormat.container}"`);
-        // res.setHeader('Content-Type', `video/${videoFormat.container}`);
+//         ytdl(videoUrl, { format: videoFormat }).pipe(res);
+//         // Set the response headers
+//         // res.setHeader('Content-Disposition', `attachment; filename="${info.videoDetails.title}.${videoFormat.container}"`);
+//         // res.setHeader('Content-Type', `video/${videoFormat.container}`);
 
-        // // Stream the video
-        // ytdl(videoUrl, { format: videoFormat }).pipe(res);
-    } catch (err)
-    {
-        console.error(err);
-        res.status(500).send('Error downloading the video');
-    }
-});
+//         // // Stream the video
+//         // ytdl(videoUrl, { format: videoFormat }).pipe(res);
+//     } catch (err)
+//     {
+//         console.error(err);
+//         res.status(500).send('Error downloading the video');
+//     }
+// });
 
 // app.get('/audio', async (req, res) =>
 // {
