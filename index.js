@@ -8,9 +8,9 @@
 const express = require('express');
 const cors = require('cors');
 const ytdl = require('ytdl-core');
-// const swaggerJsDoc = require("swagger-jsdoc");
+const swaggerJsDoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
-const swaggerDocument = require('./swagger');
+
 const app = express();
 const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
 const ffmpeg = require('fluent-ffmpeg');
@@ -23,28 +23,27 @@ function sanitizeFilename(filename)
 // Use CORS middleware
 app.use(cors());
 
-// Serve Swagger documentation
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-// // Extended: https://swagger.io/specification/#infoObject
-// const swaggerOptions = {
-//     swaggerDefinition: {
-//         openapi: "3.0.0",
-//         info: {
-//             title: "Express API",
-//             version: "1.0.0",
-//             description: "Express API Information",
-//             contact: {
-//                 name: "Developer",
-//             },
-//             servers: [{ url: "http://localhost:8080" }],
-//         },
-//     },
-//     // ['.routes/*.js']
-//     apis: ["index.js"], // Path to the API docs
-// };
 
-// const swaggerDocs = swaggerJsDoc(swaggerOptions);
-// app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+// Extended: https://swagger.io/specification/#infoObject
+const swaggerOptions = {
+    swaggerDefinition: {
+        openapi: "3.0.0",
+        info: {
+            title: "Express API",
+            version: "1.0.0",
+            description: "Express API Information",
+            contact: {
+                name: "Developer",
+            },
+            servers: [{ url: "http://localhost:8080" }],
+        },
+    },
+    // ['.routes/*.js']
+    apis: ["index.js"], // Path to the API docs
+};
+
+const swaggerDocs = swaggerJsDoc(swaggerOptions);
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 /**
  * @swagger
  * /video:
