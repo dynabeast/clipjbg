@@ -24,6 +24,8 @@ function sanitizeFilename(filename)
 app.use(cors());
 // Serve static files from the 'public' directory
 app.use(express.static('public'));
+// Define CDN URL for Swagger UI CSS
+const CSS_URL = "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui.min.css";
 
 // Extended: https://swagger.io/specification/#infoObject
 const swaggerOptions = {
@@ -44,7 +46,13 @@ const swaggerOptions = {
 };
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+// app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+// Serve Swagger UI with custom CSS URL
+app.use(
+    '/api-docs',
+    swaggerUi.serve,
+    swaggerUi.setup(swaggerDocs, { customCssUrl: CSS_URL })
+);
 
 /**
  * @swagger
