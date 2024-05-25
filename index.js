@@ -117,7 +117,7 @@ app.use(
 
 
 
-app.get("/", (req, res) => { res.send("Express on express-vidbinary"); });
+app.get("/", (req, res) => { res.send("Hello on express-vidbinary"); });
 app.get('/video', async (req, res) =>
 {
     const videoUrl = req.query.url; // Get the video URL from the query parameter
