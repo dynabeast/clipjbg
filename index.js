@@ -6,7 +6,7 @@
 // app.listen(PORT, () => { console.log(`Server is running on port ${PORT}`); });
 
 const express = require('express');
-const cors = require('cors');
+// const cors = require('cors');
 const ytdl = require('ytdl-core');
 const app = express();
 // const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
@@ -18,7 +18,7 @@ function sanitizeFilename(filename)
     return filename.replace(/[^\w\.\-\(\)]/g, '_');
 }
 // Use CORS middleware
-app.use(cors());
+// app.use(cors());
 
 
 // app.get('/', async (req, res) =>
