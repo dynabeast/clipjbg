@@ -47,7 +47,11 @@ const swaggerDocs = swaggerJsDoc(swaggerOptions);
 app.use(
     "/api-docs",
     swaggerUi.serve,
-    swaggerUi.setup(swaggerDocs, { explorer: true })
+    swaggerUi.setup(swaggerDocs, {
+        explorer: true,
+        customCssUrl:
+            "https://cdn.jsdelivr.net/npm/swagger-ui-themes@3.0.0/themes/3.x/theme-newspaper.css",
+    })
 );
 /**
  * @swagger
