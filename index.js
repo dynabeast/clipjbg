@@ -9,9 +9,9 @@ const express = require('express');
 const cors = require('cors');
 const ytdl = require('ytdl-core');
 const app = express();
-const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
-const ffmpeg = require('fluent-ffmpeg');
-ffmpeg.setFfmpegPath(ffmpegPath);
+// const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
+// const ffmpeg = require('fluent-ffmpeg');
+// ffmpeg.setFfmpegPath(ffmpegPath);
 function sanitizeFilename(filename)
 {
     // Remove any invalid characters from the filename
@@ -73,41 +73,41 @@ app.get('/download', async (req, res) =>
     }
 });
 
-app.get('/audio', async (req, res) =>
-{
-    const videoUrl = req.query.url;
-    if (!videoUrl)
-    {
-        return res.status(400).send('Video URL is required');
-    }
+// app.get('/audio', async (req, res) =>
+// {
+//     const videoUrl = req.query.url;
+//     if (!videoUrl)
+//     {
+//         return res.status(400).send('Video URL is required');
+//     }
 
-    try
-    {
-        const info = await ytdl.getInfo(videoUrl);
-        const audioFormat = ytdl.filterFormats(info.formats, 'audioonly');
-        const audioStream = ytdl(videoUrl, { format: audioFormat[0] });
+//     try
+//     {
+//         const info = await ytdl.getInfo(videoUrl);
+//         const audioFormat = ytdl.filterFormats(info.formats, 'audioonly');
+//         const audioStream = ytdl(videoUrl, { format: audioFormat[0] });
 
-        const encodedFileName = encodeURIComponent(info.videoDetails.title) + '.mp3';
-        res.setHeader('Content-Disposition', `attachment; filename="${encodedFileName}"`);
-        res.setHeader('Content-Type', 'audio/mpeg');
+//         const encodedFileName = encodeURIComponent(info.videoDetails.title) + '.mp3';
+//         res.setHeader('Content-Disposition', `attachment; filename="${encodedFileName}"`);
+//         res.setHeader('Content-Type', 'audio/mpeg');
 
-        const ffmpegProcess = ffmpeg({ source: audioStream })
-            .audioBitrate(128)
-            .audioChannels(2)
-            .toFormat('mp3')
-            .pipe(res, { end: true });
+//         const ffmpegProcess = ffmpeg({ source: audioStream })
+//             .audioBitrate(128)
+//             .audioChannels(2)
+//             .toFormat('mp3')
+//             .pipe(res, { end: true });
 
-        ffmpegProcess.on('error', (err) =>
-        {
-            console.error('ffmpeg error:', err);
-            res.status(500).send('Error converting video to MP3');
-        });
-    } catch (err)
-    {
-        console.error('Error downloading video:', err);
-        res.status(500).send('Error downloading video');
-    }
-});
+//         ffmpegProcess.on('error', (err) =>
+//         {
+//             console.error('ffmpeg error:', err);
+//             res.status(500).send('Error converting video to MP3');
+//         });
+//     } catch (err)
+//     {
+//         console.error('Error downloading video:', err);
+//         res.status(500).send('Error downloading video');
+//     }
+// });
 // Start the server
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () =>
