@@ -34,7 +34,8 @@ const swaggerOptions = {
             contact: {
                 name: "Developer",
             },
-            servers: [{ url: "http://localhost:8080" }],
+            servers: [{ url: "https://vidb.vercel.app/" }],
+            // servers: [{ url: "http://localhost:8080" }],
         },
     },
     // ['.routes/*.js']
