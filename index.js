@@ -25,7 +25,7 @@ function sanitizeFilename(filename)
 // Use CORS middleware
 app.use(cors());
 
-
+app.use(express.static('public'));
 // Extended: https://swagger.io/specification/#infoObject
 const swaggerOptions = {
     swaggerDefinition: {
