@@ -34,7 +34,7 @@ const swaggerOptions = {
             contact: {
                 name: "Developer",
             },
-            servers: [{ url: "http://localhost:8080" }],
+            // servers: [{ url: "http://localhost:8080" }],
         },
     },
     // ['.routes/*.js']
