@@ -22,7 +22,8 @@ function sanitizeFilename(filename)
 }
 // Use CORS middleware
 app.use(cors());
-
+// Serve static files from the 'public' directory
+app.use(express.static('public'));
 
 // Extended: https://swagger.io/specification/#infoObject
 const swaggerOptions = {
