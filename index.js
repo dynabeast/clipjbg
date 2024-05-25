@@ -8,11 +8,9 @@
 const express = require('express');
 const cors = require('cors');
 const ytdl = require('ytdl-core');
-const swaggerJsDoc = require("swagger-jsdoc");
+// const swaggerJsDoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
-const CSS_URL =
-    "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui.min.css";
-
+const swaggerDocument = require('./swagger');
 const app = express();
 const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
 const ffmpeg = require('fluent-ffmpeg');
@@ -25,33 +23,28 @@ function sanitizeFilename(filename)
 // Use CORS middleware
 app.use(cors());
 
-app.use(express.static('public'));
-// Extended: https://swagger.io/specification/#infoObject
-const swaggerOptions = {
-    swaggerDefinition: {
-        openapi: "3.0.0",
-        info: {
-            title: "Express API",
-            version: "1.0.0",
-            description: "Express API Information",
-            contact: {
-                name: "Developer",
-            },
-            servers: [{ url: "https://vidb.vercel.app/" }],
-            // servers: [{ url: "http://localhost:8080" }],
-        },
-    },
-    // ['.routes/*.js']
-    apis: ["index.js"], // Path to the API docs
-};
+// Serve Swagger documentation
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+// // Extended: https://swagger.io/specification/#infoObject
+// const swaggerOptions = {
+//     swaggerDefinition: {
+//         openapi: "3.0.0",
+//         info: {
+//             title: "Express API",
+//             version: "1.0.0",
+//             description: "Express API Information",
+//             contact: {
+//                 name: "Developer",
+//             },
+//             servers: [{ url: "http://localhost:8080" }],
+//         },
+//     },
+//     // ['.routes/*.js']
+//     apis: ["index.js"], // Path to the API docs
+// };
 
-const swaggerDocs = swaggerJsDoc(swaggerOptions);
+// const swaggerDocs = swaggerJsDoc(swaggerOptions);
 // app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
-app.use(
-    "/api-docs",
-    swaggerUi.serve,
-    swaggerUi.setup(swaggerDocs, { customCssUrl: CSS_URL })
-);
 /**
  * @swagger
  * /video:
