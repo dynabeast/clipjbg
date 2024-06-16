@@ -114,9 +114,85 @@ app.use(
  *         description: Error downloading the video
  */
 
+/**
+ * @swagger
+ * /video-details:
+ *   get:
+ *     summary: Fetch video details
+ *     description: Fetch video details from a provided YouTube URL.
+ *     parameters:
+ *       - in: query
+ *         name: url
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: YouTube video URL
+ *     responses:
+ *       200:
+ *         description: A successful response
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 title:
+ *                   type: string
+ *                 description:
+ *                   type: string
+ *                 lengthSeconds:
+ *                   type: integer
+ *                 viewCount:
+ *                   type: integer
+ *                 author:
+ *                   type: string
+ *                 uploadDate:
+ *                   type: string
+ *                   format: date
+ *                 thumbnails:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       url:
+ *                         type: string
+ *                       width:
+ *                         type: integer
+ *                       height:
+ *                         type: integer
+ *       400:
+ *         description: URL is required
+ *       500:
+ *         description: Failed to fetch video details
+ */
 
-
-
+/**
+ * @swagger
+ * /video-url:
+ *   get:
+ *     summary: Fetch video download URL
+ *     description: Fetch the download URL of the highest quality format from a provided YouTube URL.
+ *     parameters:
+ *       - in: query
+ *         name: url
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: YouTube video URL
+ *     responses:
+ *       200:
+ *         description: A successful response
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 downloadUrl:
+ *                   type: string
+ *       400:
+ *         description: URL is required
+ *       500:
+ *         description: Failed to fetch download URL
+ */
 app.get("/", (req, res) => { res.send("Hello on express-vidbinary"); });
 app.get('/video', async (req, res) =>
 {
@@ -188,6 +264,60 @@ app.get('/audio', async (req, res) =>
     {
         console.error('Error downloading video:', err);
         res.status(500).send('Error downloading video');
+    }
+});
+
+app.get('/video-details', async (req, res) =>
+{
+    const videoUrl = req.query.url;
+
+    if (!videoUrl)
+    {
+        return res.status(400).json({ error: 'URL is required' });
+    }
+
+    try
+    {
+        const videoId = ytdl.getURLVideoID(videoUrl);
+        const videoInfo = await ytdl.getInfo(videoId);
+
+        const details = {
+            title: videoInfo.videoDetails.title,
+            description: videoInfo.videoDetails.description,
+            lengthSeconds: videoInfo.videoDetails.lengthSeconds,
+            viewCount: videoInfo.videoDetails.viewCount,
+            author: videoInfo.videoDetails.author,
+            uploadDate: videoInfo.videoDetails.uploadDate,
+            thumbnails: videoInfo.videoDetails.thumbnails,
+        };
+
+        res.json(details);
+    } catch (error)
+    {
+        console.error('Error fetching video details:', error);
+        res.status(500).json({ error: 'Failed to fetch video details' });
+    }
+});
+app.get('/video-url', async (req, res) =>
+{
+    const videoUrl = req.query.url;
+
+    if (!videoUrl)
+    {
+        return res.status(400).json({ error: 'URL is required' });
+    }
+
+    try
+    {
+        const videoId = ytdl.getURLVideoID(videoUrl);
+        const videoInfo = await ytdl.getInfo(videoId);
+        const format = ytdl.chooseFormat(videoInfo.formats, { quality: 'highest' });
+
+        res.json({ downloadUrl: format.url });
+    } catch (error)
+    {
+        console.error('Error fetching download URL:', error);
+        res.status(500).json({ error: 'Failed to fetch download URL' });
     }
 });
 // Start the server
