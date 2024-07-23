@@ -19,11 +19,11 @@ app.use(
 );
 
 // Rate limiting
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // limit each IP to 100 requests per windowMs
-});
-app.use(limiter);
+// const limiter = rateLimit({
+//   windowMs: 15 * 60 * 1000, // 15 minutes
+//   max: 100, // limit each IP to 100 requests per windowMs
+// });
+// app.use(limiter);
 
 // URL validation function
 function isValidYoutubeUrl(url) {
@@ -34,7 +34,7 @@ function isValidYoutubeUrl(url) {
 }
 
 // Download route
-app.get("/video", async (req, res) => {
+app.get("/download", async (req, res) => {
   try {
     const url = req.query.url;
     if (!url || !isValidYoutubeUrl(url)) {
