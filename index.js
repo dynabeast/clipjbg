@@ -32,7 +32,9 @@ function isValidYoutubeUrl(url) {
     (url.includes("youtube.com") || url.includes("youtu.be"))
   );
 }
-
+app.get("/", (req,res) => {
+  return res.status(400).send("YouTube URL");
+});
 // Download route
 app.get("/video", async (req, res) => {
   try {
